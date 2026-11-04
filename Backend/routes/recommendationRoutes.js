@@ -4,7 +4,11 @@ const axios = require("axios");
 
 const router = express.Router();
 
-// POST /api/recommendations
+// Use local Python server during development
+// Use Render URL after deployment
+const ML_API_URL =
+    process.env.ML_API_URL || "http://127.0.0.1:8000";
+
 router.post("/", async (req, res) => {
     try {
         const {
@@ -15,13 +19,14 @@ router.post("/", async (req, res) => {
         } = req.body;
 
         const response = await axios.post(
-            "http://127.0.0.1:8000/recommend",
+            `${ML_API_URL}/recommend`,
             {
                 average_power,
                 daily_energy,
                 monthly_energy,
                 target_percentage
-            }
+            },
+            { timeout: 60000 }
         );
 
         res.json(response.data);
