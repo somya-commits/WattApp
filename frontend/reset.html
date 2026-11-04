@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | WattWise</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f1f6f2;
+        }
+
+        .container {
+            width: 400px;
+            max-width: 90%;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: #dcfce7;
+            color: #07843d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            font-size: 25px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #082d4e;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #dce3e8;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #07843d;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #063b67;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #07518a;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #063b67;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #07843d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">◆</div>
+
+        <h2>Forgot Password?</h2>
+
+        <p>
+            Don't worry! Enter your registered email address.
+            We will send you a link to reset your password.
+        </p>
+
+        <form id="resetForm">
+
+            <label for="email">Email Address</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your registered email"
+                required
+            >
+
+            <button type="submit" id="sendBtn">
+                Send Reset Link
+            </button>
+
+        </form>
+
+        <div id="message" aria-live="polite"></div>
+
+        <a href="index.html" class="back">
+            ← Back to Login
+        </a>
+
+    </div>
+
+    <script type="module" src="reset.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>WattWise ✨</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="dashboard.css">
+
+    <style>
+        /* PROFILE HEADER */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .profile-wrapper {
+            position: relative;
+        }
+
+        .profile-btn {
+            cursor: pointer;
+        }
+
+        /* PROFILE POPUP */
+        .profile-popup {
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            width: 310px;
+            padding: 22px;
+            background: #ffffff;
+            color: #30243f;
+            border: 1px solid #eee6f7;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(45, 25, 70, 0.16);
+            z-index: 9999;
+        }
+
+        .profile-popup[hidden] {
+            display: none !important;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .profile-avatar {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            background: #e9dcff;
+            color: #7545bd;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .profile-user-info {
+            min-width: 0;
+        }
+
+        .profile-user-info h3 {
+            margin: 0 0 5px;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .profile-user-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #91869e;
+            overflow-wrap: anywhere;
+        }
+
+        .profile-popup hr {
+            border: 0;
+            border-top: 1px solid #eee8f5;
+            margin: 18px 0;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .profile-item span {
+            font-size: 12px;
+            color: #91869e;
+        }
+
+        .profile-item b {
+            font-size: 14px;
+            color: #392b49;
+            overflow-wrap: anywhere;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #fff0f0;
+            color: #d34e5b;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #ffe1e3;
+        }
+
+        @media (max-width: 600px) {
+            .profile-popup {
+                width: min(290px, calc(100vw - 30px));
+                right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="wrap" id="d">
+
+    <!-- HEADER -->
+    <header>
+
+        <div class="logo">
+            <i>⚡</i>wattwise
+        </div>
+
+        <nav>
+            <a class="on" href="#d">Home</a>
+            <a href="#live">Live</a>
+            <a href="#bills">Bills</a>
+            <a href="#insights">Insights</a>
+            <a href="#devices">Devices</a>
+            <a href="#tariff">Tariff</a>
+        </nav>
+
+        <div class="header-actions">
+
+            <button class="ic" id="theme" type="button">
+                ◐
+            </button>
+
+            <!-- PROFILE -->
+            <div class="profile-wrapper">
+
+                <button
+                    class="ic av"
+                    id="profileBtn"
+                    type="button"
+                    aria-label="Open profile"
+                    aria-expanded="false"
+                >
+                    <span id="profileInitial">S</span>
+                </button>
+
+                <!-- PROFILE POPUP -->
+                <div class="profile-popup" id="profilePopup" hidden>
+
+                    <div class="profile-top">
+
+                        <div class="profile-avatar" id="profileInitialPopup">
+                            S
+                        </div>
+
+                        <div class="profile-user-info">
+                            <h3 id="profileName">Loading...</h3>
+                            <p id="userEmail">Loading email...</p>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="profile-details">
+
+                        <div class="profile-item">
+                            <span>⚡ Meter Number</span>
+                            <b id="userMeter">-</b>
+                        </div>
+
+                        <div class="profile-item">
+                            <span>📍 State</span>
+                            <b id="userState">-</b>
+                        </div>
+
+                        <div class="profile-item">
+                            <span>🏙️ City</span>
+                            <b id="userCity">-</b>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <button
+                        type="button"
+                        id="logoutBtn"
+                        class="logout-btn"
+                    >
+                        Logout ↗
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="g">
+
+        <!-- HERO -->
+        <section class="c hero s8">
+
+            <div class="row">
+                <span class="pill w">
+                    <span class="dot"></span>
+                    meter WW12345 · synced
+                    <span id="syncTime">just now</span>
+                </span>
+            </div>
+
+            <h1>
+                gm Somya 👋<br>
+                your home is at
+                <span id="kw">1.42</span> kW rn ✨
+            </h1>
+
+            <div class="row">
+                <span class="pill">
+                    <span class="dot"></span>demo live
+                </span>
+
+                <b>Energy usage is updating automatically.</b>
+            </div>
+
+        </section>
+
+        <!-- ENERGY SCORE AND STREAK -->
+        <section class="s4" style="display:grid;gap:14px">
+
+            <div class="c score">
+                <div class="k">energy score</div>
+
+                <div class="sw">
+                    <div class="sr"></div>
+                    <b>86<small>/ 100</small></b>
+                </div>
+
+                <b>main character energy 😎</b>
+            </div>
+
+            <div class="c streak">
+                <div class="k">saving streak</div>
+                <div class="big">7 days 🔥</div>
+            </div>
+
+        </section>
+
+        <!-- CURRENT USAGE -->
+        <section class="c">
+
+            <div class="row">
+                <div class="ti">⚡</div>
+                <span class="k">current usage</span>
+            </div>
+
+            <div class="big" style="margin:16px 0 8px">
+                <span id="powerNow">1.42</span> kW
+            </div>
+
+            <span class="chip dn">live sample</span>
+
+        </section>
+
+        <!-- TODAY COST -->
+        <section class="c">
+
+            <div class="row">
+                <div class="ti">₹</div>
+                <span class="k">spent today</span>
+            </div>
+
+            <div class="big" style="margin:16px 0 8px" id="todayCost">
+                ₹84
+            </div>
+
+            <span class="chip dn">estimated</span>
+
+        </section>
+
+        <!-- MONTHLY BILL -->
+        <section class="c click" id="cMonth" role="button" tabindex="0">
+
+            <div class="row">
+                <div class="ti">🗓</div>
+                <span class="k">this month (est.)</span>
+            </div>
+
+            <div class="big" id="mBill" style="margin:16px 0 8px">
+                ₹2,416
+            </div>
+
+            <span class="chip up">tap to edit ✎</span>
+
+        </section>
+
+        <!-- DAILY BUDGET -->
+        <section class="c click" id="cBudget" role="button" tabindex="0">
+
+            <div class="row">
+                <div class="ti">🎯</div>
+                <span class="k">daily budget</span>
+            </div>
+
+            <div class="big" style="margin:16px 0 0">
+                ₹<span id="bUsed">142</span>
+
+                <span class="k" style="font-size:15px">
+                    / ₹<span id="bLim">200</span>
+                </span>
+            </div>
+
+            <div class="prog">
+                <i id="bBar"></i>
+            </div>
+
+            <span class="k" id="bTxt">
+                71% used, still chill
+            </span>
+
+            <span class="hint">tap to edit ✎</span>
+
+        </section>
+
+        <!-- LIVE POWER GRAPH -->
+        <section class="c s8" id="live">
+
+            <h3>
+                live power
+                <span class="pill">● demo live</span>
+            </h3>
+
+            <svg id="lv" viewBox="0 0 660 210" width="100%"></svg>
+
+        </section>
+
+        <!-- USAGE BREAKDOWN -->
+        <section class="c s4">
+
+            <h3>when you use it</h3>
+
+            <div class="dw">
+                <div class="dr"></div>
+                <b>32%<small>peak hours</small></b>
+            </div>
+
+            <div class="leg">
+                <div>
+                    <i style="background:var(--pink)"></i>
+                    Peak 6–10 am
+                    <b>32%</b>
+                </div>
+
+                <div>
+                    <i style="background:var(--lilac)"></i>
+                    Day 10 am–6 pm
+                    <b>41%</b>
+                </div>
+
+                <div>
+                    <i style="background:var(--mint)"></i>
+                    Night 6 pm–6 am
+                    <b>27%</b>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- APPLIANCES -->
+        <section class="c s4" id="devices">
+
+            <h3>
+                power hogs
+                <span class="hint">tap to simulate</span>
+            </h3>
+
+            <div class="ap">
+
+                <div class="click" data-app="0" role="button" tabindex="0">
+                    <div class="ti">❄️</div>
+                    <div>
+                        <em>AC</em>
+                        <span><i style="width:42%"></i></span>
+                    </div>
+                    <b>42%</b>
+                </div>
+
+                <div class="click" data-app="1" role="button" tabindex="0">
+                    <div class="ti">♨️</div>
+                    <div>
+                        <em>Water heater</em>
+                        <span><i style="width:18%"></i></span>
+                    </div>
+                    <b>18%</b>
+                </div>
+
+                <div class="click" data-app="2" role="button" tabindex="0">
+                    <div class="ti">🫧</div>
+                    <div>
+                        <em>Washing machine</em>
+                        <span><i style="width:15%"></i></span>
+                    </div>
+                    <b>15%</b>
+                </div>
+
+                <div class="click" data-app="3" role="button" tabindex="0">
+                    <div class="ti">🧊</div>
+                    <div>
+                        <em>Fridge</em>
+                        <span><i style="width:12%"></i></span>
+                    </div>
+                    <b>12%</b>
+                </div>
+
+            </div>
+
+            <p class="hint" id="appResult">
+                Tap an appliance to calculate estimated energy and cost.
+            </p>
+
+        </section>
+
+        <!-- BILL FORECAST -->
+        <section class="c s4" id="bills">
+
+            <h3>
+                bill forecast
+                <span class="hint">tap a month</span>
+            </h3>
+
+            <div class="fc" id="fc"></div>
+
+            <p class="hint">
+                Estimated values based on sample data.
+            </p>
+
+        </section>
+
+        <!-- RECENT ACTIVITY -->
+        <section class="c s4">
+
+            <h3>recent activity</h3>
+
+            <div class="act">
+
+                <div>
+                    <div class="ti">⚡</div>
+                    <span>AC turned on<small>2h ago</small></span>
+                </div>
+
+                <div>
+                    <div class="ti">🫧</div>
+                    <span>Washer finished<small>4h ago</small></span>
+                </div>
+
+                <div>
+                    <div class="ti">₹</div>
+                    <span>Forecast updated<small>6h ago</small></span>
+                </div>
+
+                <div>
+                    <div class="ti">🔔</div>
+                    <span>Budget alert<small>8h ago</small></span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- SMART INSIGHT -->
+        <!-- AI ENERGY RECOMMENDATIONS -->
+<section class="c s8" id="aiRecommendations">
+    <div class="row">
+        <h3>🤖 AI energy-saving recommendations</h3>
+        <span class="pill">WattWise AI</span>
+    </div>
+
+    <p class="hint" id="aiStatus">
+        Analyzing your electricity consumption...
+    </p>
+
+    <div id="recommendationList">
+        <p class="hint">Your recommendations will appear here.</p>
+    </div>
+
+    <button type="button" class="go" id="refreshRecommendations">
+        Refresh recommendations
+    </button>
+</section>
+
+        <!-- TARIFF -->
+        <section class="c s12" id="tariff">
+
+            <h3>tariff & bill calculator</h3>
+
+            <p class="k">
+                Edit monthly units, fixed charge and slab rates to estimate your electricity bill.
+            </p>
+
+            <button class="go" type="button" id="openBill">
+                Open bill and tariff calculator
+            </button>
+
+        </section>
+
+    </main>
+
+    <p class="hint" style="text-align:center;margin-top:18px">
+        WattWise prototype · readings shown are sample/demo data until connected to your ESP32.
+    </p>
+
+</div>
+
+<!-- BILL CALCULATOR -->
+<dialog id="dMonth">
+
+    <button class="x" type="button" data-close>✕</button>
+
+    <h2>Bill & tariff calculator</h2>
+
+    <p class="k">
+        Change the values to estimate your monthly bill.
+    </p>
+
+    <label class="f" for="uR">Monthly energy consumption</label>
+
+    <div class="inl">
+        <input id="uR" type="range" min="0" max="1000" value="349">
+        <input id="uN" type="number" min="0" max="1000" value="349">
+        <b>units</b>
+    </div>
+
+    <label class="f" for="fx">Fixed charge (₹)</label>
+
+    <div class="inl">
+        <input id="fx" type="number" min="0" max="10000" value="50">
+    </div>
+
+    <label class="f" for="bR">Daily budget (₹)</label>
+
+    <div class="inl">
+        <input id="bR" type="range" min="1" max="2000" value="200">
+        <input id="bN" type="number" min="1" max="2000" value="200">
+    </div>
+
+    <div class="th">
+        <span>Units slab</span>
+        <span>Rate ₹/unit</span>
+        <span>Units used</span>
+        <span>Charge</span>
+    </div>
+
+    <div id="slabs"></div>
+
+    <div class="tot">
+        <span>Estimated bill</span>
+        <b id="tot">₹0</b>
+    </div>
+
+    <p class="k" id="bNote"></p>
+
+    <button class="go" id="save" type="button">
+        Save changes
+    </button>
+
+</dialog>
+
+<!-- APPLIANCE SIMULATOR -->
+<dialog id="dSim">
+
+    <button class="x" type="button" data-close>✕</button>
+
+    <h2>Appliance simulator</h2>
+
+    <p class="k">
+        Estimate energy use and cost for an appliance.
+    </p>
+
+    <div class="tabs" id="sTabs"></div>
+
+    <h3>
+        <span id="sIc">❄️</span>
+        <span id="sNm">AC</span>
+    </h3>
+
+    <label class="f" for="sW">Appliance power (watts)</label>
+
+    <div class="inl">
+        <input id="sW" type="number" min="1" max="20000" value="1500">
+    </div>
+
+    <label class="f" for="sH">
+        Hours used per day <b id="sHv">6 h</b>
+    </label>
+
+    <div class="inl">
+        <input id="sH" type="range" min="0" max="24" step=".5" value="6">
+    </div>
+
+    <label class="f" for="sD">
+        Days used per month <b id="sDv">30 days</b>
+    </label>
+
+    <div class="inl">
+        <input id="sD" type="range" min="1" max="31" value="30">
+    </div>
+
+    <div class="res">
+        <div>
+            <b id="rD">9.00</b>
+            <small>kWh per day</small>
+        </div>
+
+        <div>
+            <b id="rM">270</b>
+            <small>kWh per month</small>
+        </div>
+
+        <div>
+            <b id="rC">₹0</b>
+            <small>estimated monthly cost</small>
+        </div>
+    </div>
+
+    <p class="k" id="sNote"></p>
+
+</dialog>
+
+<!-- DAILY USAGE CALENDAR -->
+<dialog id="dDay">
+
+    <button class="x" type="button" data-close>✕</button>
+
+    <h2>Daily usage breakdown</h2>
+
+    <p class="k">
+        Select a month and tap a day to see estimated usage.
+    </p>
+
+    <div class="tabs" id="yTabs"></div>
+
+    <div class="res">
+
+        <div>
+            <b id="yU">—</b>
+            <small>monthly units</small>
+        </div>
+
+        <div>
+            <b id="yB">—</b>
+            <small>estimated bill</small>
+        </div>
+
+        <div>
+            <b id="yA">—</b>
+            <small>daily average</small>
+        </div>
+
+    </div>
+
+    <div class="cal">
+
+        <div class="wd">
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+        </div>
+
+        <div class="days" id="yG"></div>
+
+    </div>
+
+    <div class="leg2">
+        <i style="background:#9af0d2"></i>Low
+        <i style="background:#c4b1ff"></i>Medium
+        <i style="background:#ff9fd8"></i>High
+        <i style="background:#ff7a66"></i>Very high
+    </div>
+
+    <p class="k" id="yD">
+        Select a day.
+    </p>
+
+</dialog>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="dTip"></div>
+
+<!-- JAVASCRIPT -->
+<script src="dashboard.js"></script>
+<script type="module" src="profile.js"></script>
+
+</body>
+</html>
