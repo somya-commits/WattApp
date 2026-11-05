@@ -32,16 +32,19 @@ router.post("/", async (req, res) => {
         res.json(response.data);
 
     } catch (error) {
-        console.error(
-            "Recommendation error:",
-            error.response?.data || error.message
-        );
+    console.error("========== AI ERROR ==========");
+    console.error("Message:", error.message);
+    console.error("Status:", error.response?.status);
+    console.error("Response:", error.response?.data);
+    console.error("URL:", error.config?.url);
+    console.error("==============================");
 
-        res.status(500).json({
-            success: false,
-            message: "Unable to generate recommendations"
-        });
-    }
+    res.status(500).json({
+        success: false,
+        message: "Unable to generate recommendations",
+        error: error.message
+    });
+}
 });
 
 module.exports = router;
