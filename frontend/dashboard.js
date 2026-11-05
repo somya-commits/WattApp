@@ -27,7 +27,7 @@ const inr = value =>
 // 1. LIVE POWER GRAPH - BACKEND CONNECTION
 // ==========================================
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = "https://wattapp-1.onrender.com";
 const svg = $("lv");
 let powerValues = [];
 
